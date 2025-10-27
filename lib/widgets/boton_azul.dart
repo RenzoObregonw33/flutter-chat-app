@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 class BotonAzul extends StatelessWidget {
-
   final String text;
-  final Function onPressed;
+  final Function? onPressed;
 
-  const BotonAzul({super.key, required this.text, required this.onPressed});
+  const BotonAzul({super.key, required this.text, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        this.onPressed();
-      },
+      onPressed: onPressed != null
+          ? () {
+              this.onPressed!();
+            }
+          : null,
       style: ElevatedButton.styleFrom(
         elevation: 2,
         shadowColor: Colors.black,

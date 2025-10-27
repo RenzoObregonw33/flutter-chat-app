@@ -1,5 +1,7 @@
 import 'package:chat/models/usuario.dart';
+import 'package:chat/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UsuariosPage extends StatefulWidget {
@@ -10,27 +12,45 @@ class UsuariosPage extends StatefulWidget {
 }
 
 class _UsuariosPageState extends State<UsuariosPage> {
-
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-
+  RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
 
   final usuarios = [
     Usuario(online: true, nombre: "María", email: "test1@test.com", uid: "1"),
-    Usuario(online: false,nombre: "Melissa",email: "test2@test.com",uid: "2"),
-    Usuario(online: true,nombre: "Fernando",email: "test3@test.com",uid: "3"),
+    Usuario(
+      online: false,
+      nombre: "Melissa",
+      email: "test2@test.com",
+      uid: "2",
+    ),
+    Usuario(
+      online: true,
+      nombre: "Eduardo",
+      email: "test3@test.com",
+      uid: "3",
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario!;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Mi nombre', style: TextStyle(color: Colors.black)),
+        title: Text(usuario.nombre, style: TextStyle(color: Colors.black)),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.output_outlined, color: Colors.black),
-          onPressed: () {},
+          icon: const Icon(Icons.exit_to_app, color: Colors.black),
+          onPressed: () {
+            //TODO: desconectarnos del socket server
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthService.deleteToken();
+          },
         ),
         actions: [
           Container(
@@ -39,7 +59,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
           ),
         ],
       ),
-      body: SmartRefresher(controller:  _refreshController, 
+      body: SmartRefresher(
+        controller: _refreshController,
         enablePullDown: true,
         onRefresh: _cargarUsuarios,
         header: WaterDropHeader(
@@ -50,7 +71,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
       ),
     );
   }
-
 
   ListView _listViewUsuarios() {
     return ListView.separated(
@@ -64,7 +84,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   ListTile _usuarioListTile(Usuario usuario) {
     return ListTile(
       title: Text(usuario.nombre),
-      subtitle: Text(usuario.email) ,
+      subtitle: Text(usuario.email),
       leading: CircleAvatar(
         child: Text(usuario.nombre.substring(0, 2)),
         backgroundColor: Colors.blue[200],

@@ -16,7 +16,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _focusNode = FocusNode();
 
   List<ChatMessage> _messages = [];
-  
+
   bool _estaEscribiendo = false;
 
   @override
@@ -92,10 +92,10 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: Platform.isIOS
                   ? CupertinoButton(
-                    child: Text('Enviar'), 
-                    onPressed: _estaEscribiendo 
-                      ? () => _handleSubmit(_textController.text.trim())
-                      : null,
+                      child: Text('Enviar'),
+                      onPressed: _estaEscribiendo
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null,
                     )
                   : Container(
                       margin: EdgeInsets.symmetric(horizontal: 4.0),
@@ -105,9 +105,9 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           icon: Icon(Icons.send),
-                          onPressed: _estaEscribiendo 
-                          ? () => _handleSubmit(_textController.text.trim())
-                          : null,
+                          onPressed: _estaEscribiendo
+                              ? () => _handleSubmit(_textController.text.trim())
+                              : null,
                         ),
                       ),
                     ),
@@ -119,7 +119,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   }
 
   _handleSubmit(String texto) {
-
     if (texto.length == 0) return;
 
     print(texto);
@@ -129,8 +128,9 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     final newMessage = ChatMessage(
       texto: texto,
       uid: '123',
-      animationController: AnimationController(vsync: this,
-      duration: Duration(milliseconds: 200)
+      animationController: AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 200),
       ),
     );
     _messages.insert(0, newMessage);
