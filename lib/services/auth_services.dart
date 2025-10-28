@@ -40,14 +40,13 @@ class AuthService with ChangeNotifier {
       body: jsonEncode(data),
       headers: {'Content-Type': 'application/json'},
     );
-
+    
     this.autenticando = false;
 
     if (resp.statusCode == 200) {
       final loginResponse = loginResponseFromJson(resp.body);
       this.usuario = loginResponse.usuario;
 
-      // Aquí puedes guardar el token o la información del usuario según la respuesta
       await this._guardarToken(loginResponse.token);
 
       return true;
